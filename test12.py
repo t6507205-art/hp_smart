@@ -19,9 +19,6 @@ from test_hp_python_15 import submit_otp
 
 REPORT = []
 
-# -----------------------------
-# SIMPLE HARDCODED CONFIG
-# -----------------------------
 CONFIG = {
     "app_launch": "{VK_LWIN}HP Smart{ENTER}",
     "windows": {
@@ -84,9 +81,6 @@ CONFIG = {
     }
 }
 
-# -----------------------------
-# Utility functions
-# -----------------------------
 def log_step(desc: str, status: str = "PASS") -> None:
     REPORT.append((desc, status))
     print(f"{desc}: {status}")
@@ -104,9 +98,6 @@ def generate_random_name(first_len: int = None, last_len: int = None) -> Tuple[s
     last = ''.join(random.choices(string.ascii_letters, k=last_len)).capitalize()
     return first, last
 
-# -----------------------------
-# App automation using pywinauto
-# -----------------------------
 def launch_hp_smart(timeout: int = None):
     timeout = timeout or CONFIG["timeouts"]["default"]
     try:
@@ -158,9 +149,6 @@ def fill_account_form(desktop, email: str, first_name: str, last_name: str, pass
     except Exception as e:
         log_step(f"Error filling account form: {e}", "FAIL")
 
-# -----------------------------
-# Selenium / Mailsac
-# -----------------------------
 def _create_selenium_driver(headless: bool = None, extra_args: list = None):
     opts = webdriver.ChromeOptions()
     headless = headless if headless is not None else CONFIG["selenium"]["headless"]
@@ -236,9 +224,6 @@ def fetch_otp_from_mailsac(mailbox_local_part: str,
             driver.quit()
         return None, None
 
-# -----------------------------
-# Browser pop‑up handlers
-# -----------------------------
 def click_save_password_not_now(timeout: int = None):
     """
     Close the 'Save your password?' popup by pressing 'Not now'.
@@ -299,9 +284,6 @@ def click_open_hp_smart(timeout: int = None):
     except Exception as e:
         log_step(f"Could not handle 'Open HP Smart' dialog: {e}", "FAIL")
 
-# -----------------------------
-# Complete OTP entry + dialogs
-# -----------------------------
 def complete_web_verification_in_app(otp: str, timeout: int = None):
     """
     Paste OTP, submit, then:
@@ -345,9 +327,6 @@ def complete_web_verification_in_app(otp: str, timeout: int = None):
     except Exception as e:
         log_step(f"OTP verification / dialog handling failed: {e}", "FAIL")
 
-# -----------------------------
-# Report generation
-# -----------------------------
 def generate_report(path: str = None):
     path = path or "automation_report.html"
     html = (
@@ -367,9 +346,6 @@ def generate_report(path: str = None):
         f.write(html)
     print(f"Report generated: {path}")
 
-# -----------------------------
-# Main orchestration
-# -----------------------------
 def main():
     driver = None
     try:
@@ -410,12 +386,10 @@ def main():
         generate_report()
 
 
-# -----------------------------
-# PYTEST ENTRY POINT
-# -----------------------------
 if __name__ == "__main__":
     main()
 
 def test_hp_account_automation():
     main()
     assert True
+
